@@ -12,21 +12,20 @@ class Store {
   final _inputController = StreamController<HttpPerform>();
   final _outputController = StreamController<List<HttpPerform>>.broadcast();
 
-  Sink<HttpPerform> get sink => _inputController.sink;
-  Stream<List<HttpPerform>> get stream => _outputController.stream;
+  Sink<HttpPerform> get _sink => instance._inputController.sink;
+  Stream<List<HttpPerform>> get stream => instance._outputController.stream;
 
   Store() {
-    _inputController.stream.listen(_listener);
-    _outputController.add([]);
+    instance._inputController.stream.listen(_listener);
+    instance._outputController.add([]);
   }
 
-  addRequest(HttpPerform value) => sink.add(value);
+  addHttpPerform(HttpPerform value) => _sink.add(value);
 
-  addHttpPerform(HttpPerform value) => sink.add(value);
+  addRequest(HttpPerform value) => _sink.add(value);
 
-  addResponse(HttpPerform value) {
-    // print(value);
-    // _outputController.add(event);
+  addResponse(HttpPerform newHttpPerform) {
+    _sink.add(newHttpPerform);
   }
 
   List<HttpPerform> get data => _data;
@@ -36,11 +35,23 @@ class Store {
   }
 
   void _listener(HttpPerform value) async {
-    _outputController.add(_data..add(value));
+    if (_data.isEmpty) {
+      instance._outputController.add(_data..add(value));
+    } else {
+      final result = _data.map((e) {
+        if (e.id == value.id) {
+          return e..addResponse(value.response);
+        } else {
+          return e;
+        }
+      }).toList();
+
+      instance._outputController.add(result);
+    }
   }
 
   void close() {
-    _inputController.close();
-    _outputController.close();
+    instance._inputController.close();
+    instance._outputController.close();
   }
 }

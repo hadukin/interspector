@@ -14,11 +14,23 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<HttpPerform>>(
-      // initialData: [],
+      initialData: const [],
       stream: Store.instance.stream,
       builder: (context, snapshot) {
-        return Container(
-          child: Text('${snapshot.data}'),
+        return ListView(
+          children: [
+            for (final item in snapshot.data ?? <HttpPerform>[])
+              Card(
+                child: Column(
+                  children: [
+                    Text('ID: ${item.isLoading}'),
+                    Text('ID: ${item.id}'),
+                    Text('REQUEST: ${item.request}'),
+                    Text('RESPONSE: ${item.response}'),
+                  ],
+                ),
+              ),
+          ],
         );
       },
     );

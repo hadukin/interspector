@@ -37,7 +37,7 @@ class HttpPerform {
 
   addRequest(RequestItem value) => request = value;
 
-  addResponse(ResponseItem value) {
+  addResponse(ResponseItem? value) {
     response = value;
     isLoading = false;
   }

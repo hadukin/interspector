@@ -15,7 +15,7 @@ class ApiInterceptors extends InterceptorsWrapper {
   @override
   Future<dynamic> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // handler.next(options);
-    print('REQUEST ${options.hashCode}');
+    // print('REQUEST ${options.hashCode}');
     final perform = HttpPerform(id: options.hashCode);
 
     final r = RequestItem();
@@ -25,7 +25,7 @@ class ApiInterceptors extends InterceptorsWrapper {
 
     _store.addHttpPerform(updatePerform);
 
-    print('PERFORM/REQUEST: ${updatePerform.toString()}');
+    // print('PERFORM/REQUEST: ${updatePerform.toString()}');
 
     // do something before request is sent
     super.onRequest(options, handler); //add this line
@@ -54,9 +54,10 @@ class ApiInterceptors extends InterceptorsWrapper {
 
     final updatePerform = perform?.copyWith(response: res);
 
-    print('PERFORM/RESPONSE: ${updatePerform.toString()}');
-
-    // _store.setResponse(HttpPerform(id: options.hashCode));
+    // print('PERFORM/RESPONSE: ${updatePerform.toString()}');
+    if (updatePerform != null) {
+      _store.addResponse(updatePerform);
+    }
 
     // print('RESPONSE ${response.requestOptions.hashCode}');
     // do something before response
