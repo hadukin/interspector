@@ -2,9 +2,15 @@ import 'dart:async';
 import 'package:interspector/src/models/http_perform.dart';
 
 class Store {
-  Store._privateConstructor();
+  static Store? _instance;
 
-  static final Store instance = Store._privateConstructor();
+  Store._();
+
+  static Store get instance => _instance ??= Store._();
+
+  // Store._privateConstructor();
+  // static final Store _instance = Store._privateConstructor();
+  // static Store get instance => _instance;
 
   final List<HttpPerform> _data = [];
 

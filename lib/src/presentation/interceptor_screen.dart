@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:interspector/src/models/http_perform.dart';
+import 'package:interspector/src/presentation/detail_screen.dart';
 import 'package:interspector/src/presentation/detail_view.dart';
 import 'package:interspector/src/store.dart';
 
@@ -11,11 +12,19 @@ class InterceptorScreen extends StatefulWidget {
 }
 
 class _InterceptorScreenState extends State<InterceptorScreen> {
+  late Stream<List<HttpPerform>> stream;
+
+  @override
+  void initState() {
+    super.initState();
+    stream = Store.instance.stream;
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<HttpPerform>>(
       initialData: const [],
-      stream: Store.instance.stream,
+      stream: stream,
       builder: (context, snapshot) {
         return ListView(
           children: [
@@ -29,6 +38,13 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
                       },
                     ),
                   );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return DetailScreen(id: item.id);
+                  //     },
+                  //   ),
+                  // );
                 },
                 child: Card(
                   child: Column(
