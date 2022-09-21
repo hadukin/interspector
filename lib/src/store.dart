@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:interspector/src/item.dart';
+import 'package:interspector/src/models/http_perform.dart';
 
 class Store {
   Store._privateConstructor();
@@ -35,14 +34,17 @@ class Store {
   }
 
   void _listener(HttpPerform value) async {
-    if (_data.isEmpty) {
+    final listId = _data.map((element) => element.id);
+    final hasElement = listId.contains(value.id);
+
+    if (!hasElement) {
       instance._outputController.add(_data..add(value));
     } else {
-      final result = _data.map((e) {
-        if (e.id == value.id) {
-          return e..addResponse(value.response);
+      final result = _data.map((item) {
+        if (item.id == value.id) {
+          return item..addResponse(value.response);
         } else {
-          return e;
+          return item;
         }
       }).toList();
 

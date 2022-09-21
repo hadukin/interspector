@@ -36,7 +36,18 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    client.get('https://jsonplaceholder.typicode.com/todos');
+    client.get(
+      'https://jsonplaceholder.typicode.com/todos?type=some-type&weight=10',
+      queryParameters: {
+        'name': 'anatoly',
+        'age': 30,
+      },
+      // data: {
+      //   'a': '111',
+      //   'b': '222',
+      //   'c': '333',
+      // },
+    );
   }
 
   @override

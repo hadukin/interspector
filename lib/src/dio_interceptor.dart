@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:interspector/src/item.dart';
+import 'package:interspector/src/models/http_perform.dart';
+import 'package:interspector/src/models/request_item.dart';
+import 'package:interspector/src/models/response_item.dart';
 import 'package:interspector/src/store.dart';
 
 class Interspector {
@@ -15,13 +17,20 @@ class ApiInterceptors extends InterceptorsWrapper {
   @override
   Future<dynamic> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // handler.next(options);
-    // print('REQUEST ${options.hashCode}');
+    final baseUrl = '${options.uri.scheme}://${options.uri.host}';
+
     final perform = HttpPerform(id: options.hashCode);
 
-    final r = RequestItem();
-    r.body = options.data;
-    r.headers = options.headers;
-    final updatePerform = perform.copyWith(request: r);
+    final updatePerform = perform.copyWith(
+      request: RequestItem(
+        baseUrl: baseUrl,
+        uri: options.uri,
+        method: options.method,
+        queryParameters: options.uri.queryParameters,
+        headers: options.headers,
+        data: options.data,
+      ),
+    );
 
     _store.addHttpPerform(updatePerform);
 
@@ -32,13 +41,13 @@ class ApiInterceptors extends InterceptorsWrapper {
   }
 
   @override
-  Future<dynamic> onError(DioError dioError, ErrorInterceptorHandler handler) async {
+  Future<dynamic> onError(DioError err, ErrorInterceptorHandler handler) async {
     // handler.next(dioError);
 
     //handler.next(dioError);
     print('ERROR');
     // do something to error
-    super.onError(dioError, handler); //add this line
+    super.onError(err, handler); //add this line
   }
 
   @override
@@ -48,18 +57,16 @@ class ApiInterceptors extends InterceptorsWrapper {
     final perform = _store.getHttpPerformById(id);
 
     final res = ResponseItem();
-    res.body = response.data;
-    res.status = res.status;
-    res.time = res.time;
+
+    res.data = response.data;
+    res.status = response.statusCode ?? 0;
 
     final updatePerform = perform?.copyWith(response: res);
 
-    // print('PERFORM/RESPONSE: ${updatePerform.toString()}');
     if (updatePerform != null) {
       _store.addResponse(updatePerform);
     }
 
-    // print('RESPONSE ${response.requestOptions.hashCode}');
     // do something before response
     super.onResponse(response, handler); //add this line
   }
