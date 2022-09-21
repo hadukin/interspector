@@ -5,14 +5,21 @@ import 'package:interspector/src/models/response_item.dart';
 import 'package:interspector/src/store.dart';
 
 class Interspector {
-  ApiInterceptors dioInterceptor() => ApiInterceptors();
+  late Store _store;
+
+  Interspector() {
+    _store = Store();
+  }
+
+  ApiInterceptors dioInterceptor() => ApiInterceptors(_store);
 }
 
 class ApiInterceptors extends InterceptorsWrapper {
-  late Store _store;
-  ApiInterceptors() {
-    _store = Store();
-  }
+  final Store _store;
+  ApiInterceptors(this._store);
+  // ApiInterceptors() {
+  //   _store = Store();
+  // }
 
   @override
   Future<dynamic> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {

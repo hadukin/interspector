@@ -2,28 +2,40 @@ import 'dart:async';
 import 'package:interspector/src/models/http_perform.dart';
 
 class Store {
-  static Store? _instance;
-
-  Store._();
-
-  static Store get instance => _instance ??= Store._();
-
+  // static Store? _instance;
+  // Store._();
+  // static Store get instance => _instance ??= Store._();
+  ///////////
   // Store._privateConstructor();
   // static final Store _instance = Store._privateConstructor();
   // static Store get instance => _instance;
+  //////////
+
+  static Store? _singleton;
+
+  factory Store() {
+    _singleton ??= Store._();
+    return _singleton!;
+  }
+
+  /// Creates alice core instance
+  Store._() {
+    _inputController.stream.listen(_listener);
+    _outputController.add([]);
+  }
 
   final List<HttpPerform> _data = [];
 
   final _inputController = StreamController<HttpPerform>();
   final _outputController = StreamController<List<HttpPerform>>.broadcast();
 
-  Sink<HttpPerform> get _sink => instance._inputController.sink;
-  Stream<List<HttpPerform>> get stream => instance._outputController.stream;
+  Sink<HttpPerform> get _sink => _inputController.sink;
+  Stream<List<HttpPerform>> get stream => _outputController.stream;
 
-  Store() {
-    instance._inputController.stream.listen(_listener);
-    instance._outputController.add([]);
-  }
+  // Store() {
+  //   instance._inputController.stream.listen(_listener);
+  //   instance._outputController.add([]);
+  // }
 
   addHttpPerform(HttpPerform value) => _sink.add(value);
 
@@ -44,7 +56,7 @@ class Store {
     final hasElement = listId.contains(value.id);
 
     if (!hasElement) {
-      instance._outputController.add(_data..add(value));
+      _outputController.add(_data..add(value));
     } else {
       final result = _data.map((item) {
         if (item.id == value.id) {
@@ -54,12 +66,12 @@ class Store {
         }
       }).toList();
 
-      instance._outputController.add(result);
+      _outputController.add(result);
     }
   }
 
   void close() {
-    instance._inputController.close();
-    instance._outputController.close();
+    _inputController.close();
+    _outputController.close();
   }
 }

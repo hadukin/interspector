@@ -17,7 +17,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    stream = Store.instance.stream;
+    stream = Store().stream;
   }
 
   @override
@@ -25,7 +25,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('${widget.id}')),
       body: StreamBuilder<List<HttpPerform>>(
-        stream: stream,
+        stream: widget.stream,
         builder: (context, snapshot) {
           return Column(
             children: [

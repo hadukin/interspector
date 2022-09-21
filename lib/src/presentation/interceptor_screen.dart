@@ -17,7 +17,7 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
   @override
   void initState() {
     super.initState();
-    stream = Store.instance.stream;
+    stream = Store().stream;
   }
 
   @override
@@ -41,7 +41,10 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
                   // Navigator.of(context).push(
                   //   MaterialPageRoute(
                   //     builder: (context) {
-                  //       return DetailScreen(id: item.id);
+                  //       return DetailScreen(
+                  //         id: item.id,
+                  //         stream: stream,
+                  //       );
                   //     },
                   //   ),
                   // );
