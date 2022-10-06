@@ -50,25 +50,43 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
                   // );
                 },
                 child: Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('URI: ${item.request?.baseUrl}'),
-                      const Divider(),
-                      Text('URI: ${item.request?.uri}'),
-                      const Divider(),
-                      Text('METHOD: ${item.request?.method}'),
-                      const Divider(),
-                      Text('ID: ${item.id}'),
-                      const Divider(),
-                      Text('QUERY: ${item.request?.queryParameters}'),
-                      const Divider(),
-                      Text('TIME: ${item.timeInMilliseconds}'),
-                      const Divider(),
-                      Text('REQUEST: ${item.request}'),
-                      const Divider(),
-                      Text('RESPONSE: ${item.response}'),
-                    ],
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${item.request?.method}: ',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                '${item.request?.uri?.path}',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              const SizedBox(height: 8),
+                              Text('${item.request?.baseUrl}'),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Icon(Icons.close, color: Colors.red),
+                            Icon(Icons.check, color: Colors.green),
+                            if (item.isLoading)
+                              SizedBox(
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                                width: 24,
+                                height: 24,
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

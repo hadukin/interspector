@@ -63,16 +63,16 @@ class ApiInterceptors extends InterceptorsWrapper {
 
     final perform = _store.getHttpPerformById(id);
 
-    final res = ResponseItem();
+    final r = ResponseItem(
+      data: response.data,
+      headers: response.headers.map,
+      size: 0,
+      status: response.statusCode ?? 0,
+    );
 
-    res.data = response.data;
-    res.status = response.statusCode ?? 0;
+    final updatePerform = perform?.copyWith(response: r);
 
-    final updatePerform = perform?.copyWith(response: res);
-
-    if (updatePerform != null) {
-      _store.addResponse(updatePerform);
-    }
+    if (updatePerform != null) _store.addResponse(updatePerform);
 
     // do something before response
     super.onResponse(response, handler); //add this line

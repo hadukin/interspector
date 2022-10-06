@@ -36,6 +36,22 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
+    client.post('https://6212347701ccdac07434b998.mockapi.io/content');
+    // client.get(
+    //   'https://jsonplaceholder.typicode.com/todos?type=some-type&weight=10',
+    //   queryParameters: {
+    //     'name': 'anatoly',
+    //     'age': 30,
+    //   },
+    //   // data: {
+    //   //   'a': '111',
+    //   //   'b': '222',
+    //   //   'c': '333',
+    //   // },
+    // );
+  }
+
+  _get() {
     client.get(
       'https://jsonplaceholder.typicode.com/todos?type=some-type&weight=10',
       queryParameters: {
@@ -50,18 +66,41 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  _post() {
+    client.post('https://6212347701ccdac07434b998.mockapi.io/content');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: InterceptorScreen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body: Column(
+        children: [
+          Expanded(
+            child: InterceptorScreen(),
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: _get,
+                child: Text('GET'),
+              ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: _post,
+                child: Text('POST'),
+              ),
+            ],
+          ),
+        ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }

@@ -17,32 +17,37 @@ class _RequestWidgetState extends State<RequestWidget> {
     return Column(
       children: [
         RowItem(
-          name: 'method',
+          name: 'METHOD',
           value: widget.request.method,
         ),
         const Divider(),
         RowItem(
-          name: 'baseUrl',
+          name: 'BASE URL',
           value: widget.request.baseUrl,
         ),
         const Divider(),
         RowItem(
-          name: 'queryParameters',
+          name: 'PATH',
+          value: '${widget.request.uri?.path}',
+        ),
+        const Divider(),
+        RowItem(
+          name: 'QUERY PARAMETERS',
           value: widget.request.queryParameters.toString(),
         ),
         const Divider(),
         RowItem(
-          name: 'body',
+          name: 'BODY',
           value: widget.request.body,
         ),
         const Divider(),
         RowItem(
-          name: 'headers',
+          name: 'HEADERS',
           value: widget.request.headers.toString(),
         ),
         const Divider(),
         RowItem(
-          name: 'time',
+          name: 'TIME',
           value: widget.request.time.millisecond.toString(),
         ),
       ],

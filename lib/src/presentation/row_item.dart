@@ -18,12 +18,20 @@ class RowItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 1,
-            child: Text(name),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text('$value'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '$value',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
           ),
         ],
       ),

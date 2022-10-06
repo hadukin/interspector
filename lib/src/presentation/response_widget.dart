@@ -24,23 +24,18 @@ class _ResponseWidgetState extends State<ResponseWidget> {
     return Column(
       children: [
         RowItem(
-          name: 'size',
-          value: widget.response?.size.toString(),
+          name: 'SIZE',
+          value: '${widget.response?.size}',
         ),
-        // const Divider(),
-        // RowItem(
-        //   name: 'headers',
-        //   value: widget.response.headers.toString(),
-        // ),
-        // const Divider(),
-        // RowItem(
-        //   name: 'time',
-        //   value: widget.response.time.millisecond.toString(),
-        // ),
         const Divider(),
         RowItem(
-          name: 'data',
+          name: 'DATA',
           value: '${widget.response?.data}',
+        ),
+        const Divider(),
+        RowItem(
+          name: 'STATUS',
+          value: '${widget.response?.status}',
         ),
       ],
     );
