@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:interspector/src/models/http_perform.dart';
+import 'package:interspector/src/models/response_item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Store {
@@ -21,13 +24,20 @@ class Store {
 
   addRequest(HttpPerform value) => callsSubject.value.add(value);
 
-  addResponse(HttpPerform value) {
-    HttpPerform? selectedCall = _selectCall(value.id);
+  addResponse(Response response, int? requestId) {
+    if (requestId == null) return;
+
+    HttpPerform? selectedCall = _selectCall(requestId);
 
     if (selectedCall == null) return;
 
     selectedCall.isLoading = false;
-    selectedCall.response = value.response;
+    selectedCall.response = ResponseItem(
+      data: response.data,
+      headers: response.headers.map,
+      size: utf8.encode(response.data.toString()).length,
+      status: response.statusCode ?? 0,
+    );
 
     callsSubject.add([...callsSubject.value]);
   }

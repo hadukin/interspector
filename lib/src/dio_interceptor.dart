@@ -62,21 +62,9 @@ class ApiInterceptors extends InterceptorsWrapper {
   @override
   Future<dynamic> onResponse(Response response, ResponseInterceptorHandler handler) async {
     final id = response.requestOptions.hashCode;
-
-    final perform = _store.getHttpPerformById(id);
-
-    final r = ResponseItem(
-      data: response.data,
-      headers: response.headers.map,
-      size: utf8.encode(response.data.toString()).length,
-      status: response.statusCode ?? 0,
-    );
-
-    final updatePerform = perform?.copyWith(response: r);
-
-    if (updatePerform != null) _store.addResponse(updatePerform);
+    _store.addResponse(response, id);
 
     // do something before response
-    super.onResponse(response, handler); //add this line
+    super.onResponse(response, handler);
   }
 }
