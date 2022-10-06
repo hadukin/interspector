@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
 
@@ -9,6 +10,7 @@ class HttpPerform {
   bool isLoading = true;
   RequestItem? request;
   ResponseItem? response;
+  ErrorItem? error;
 
   HttpPerform({
     required this.id,

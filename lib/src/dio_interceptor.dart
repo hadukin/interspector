@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
@@ -51,11 +52,16 @@ class ApiInterceptors extends InterceptorsWrapper {
 
   @override
   Future<dynamic> onError(DioError err, ErrorInterceptorHandler handler) async {
-    // handler.next(dioError);
+    // AliceHttpCall? selectedCall = _selectCall(requestId);
 
-    //handler.next(dioError);
-    print('ERROR');
-    // do something to error
+    final requestId = err.requestOptions.hashCode;
+
+    final error = ErrorItem();
+    error.error = err;
+    error.stackTrace = error.stackTrace;
+
+    _store.addError(error, requestId);
+
     super.onError(err, handler); //add this line
   }
 

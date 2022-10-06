@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/response_item.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,6 +43,14 @@ class Store {
     callsSubject.add([...callsSubject.value]);
   }
 
+  addError(ErrorItem error, int? requestId) {
+    final selectedCall = _selectCall(requestId);
+    if (selectedCall == null) return;
+
+    selectedCall.error = error;
+    callsSubject.add([...callsSubject.value]);
+  }
+
   HttpPerform? getHttpPerformById(int requestId) {
     return callsSubject.value.firstWhere((call) => call.id == requestId, orElse: null);
   }
@@ -60,6 +69,6 @@ class Store {
     _callsSubscription?.cancel();
   }
 
-  HttpPerform? _selectCall(int requestId) =>
+  HttpPerform? _selectCall(int? requestId) =>
       callsSubject.value.firstWhere((call) => call.id == requestId, orElse: null);
 }
