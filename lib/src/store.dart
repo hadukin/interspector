@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:interspector/src/models/http_perform.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Store {
   // static Store? _instance;
@@ -37,7 +38,10 @@ class Store {
   //   instance._outputController.add([]);
   // }
 
-  addHttpPerform(HttpPerform value) => _sink.add(value);
+  addHttpPerform(HttpPerform value) {
+    callsSubject.add([...callsSubject.value, value]);
+    _sink.add(value);
+  }
 
   addRequest(HttpPerform value) => _sink.add(value);
 
@@ -47,31 +51,61 @@ class Store {
 
   List<HttpPerform> get data => _data;
 
-  HttpPerform? getHttpPerformById(int id) {
-    return _data.firstWhere((element) => element.id == id);
+  HttpPerform? getHttpPerformById(int requestId) {
+    return callsSubject.value.firstWhere((call) => call.id == requestId, orElse: null);
+    // return _data.firstWhere((element) => element.id == id);
   }
 
   void _listener(HttpPerform value) async {
-    final listId = _data.map((element) => element.id);
-    final hasElement = listId.contains(value.id);
+    HttpPerform? selectedCall = _selectCall(value.id);
 
-    if (!hasElement) {
-      _outputController.add(_data..add(value));
-    } else {
-      final result = _data.map((item) {
-        if (item.id == value.id) {
-          return item..addResponse(value.response);
-        } else {
-          return item;
-        }
-      }).toList();
+    if (selectedCall == null) return;
 
-      _outputController.add(result);
-    }
+    selectedCall.isLoading = false;
+    selectedCall.response = value.response;
+
+    callsSubject.add([...callsSubject.value]);
+
+    // final listId = _data.map((element) => element.id);
+    // final hasElement = listId.contains(value.id);
+
+    // if (!hasElement) {
+    //   _outputController.add(_data..add(value));
+    // } else {
+    //   callsSubject.value.map((item) {
+    //     if (item.id == value.id) {
+    //       return item..addResponse(value.response);
+    //     } else {
+    //       return item;
+    //     }
+    //   });
+
+    //   final result = _data.map((item) {
+    //     if (item.id == value.id) {
+    //       return item..addResponse(value.response);
+    //     } else {
+    //       return item;
+    //     }
+    //   }).toList();
+
+    //   _outputController.add(result);
+    // }
   }
 
   void close() {
     _inputController.close();
     _outputController.close();
   }
+
+  final BehaviorSubject<List<HttpPerform>> callsSubject = BehaviorSubject.seeded([]);
+
+  StreamSubscription? _callsSubscription;
+
+  void dispose() {
+    callsSubject.close();
+    _callsSubscription?.cancel();
+  }
+
+  HttpPerform? _selectCall(int requestId) =>
+      callsSubject.value.firstWhere((call) => call.id == requestId, orElse: null);
 }

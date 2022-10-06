@@ -78,9 +78,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: InterceptorScreen(),
-          ),
+          // Expanded(
+          //   child: InterceptorScreen(),
+          // ),
           Row(
             children: [
               ElevatedButton(
@@ -92,15 +92,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: _post,
                 child: Text('POST'),
               ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return InterceptorScreen();
+                    },
+                  ));
+                },
+                child: Text('OPEN'),
+              ),
             ],
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

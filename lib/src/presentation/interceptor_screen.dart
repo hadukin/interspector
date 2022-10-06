@@ -22,77 +22,82 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<HttpPerform>>(
-      initialData: const [],
-      stream: stream,
-      builder: (context, snapshot) {
-        return ListView(
-          children: [
-            for (final item in snapshot.data ?? <HttpPerform>[])
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return DetailsView(perform: item);
-                      },
-                    ),
-                  );
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return DetailScreen(
-                  //         id: item.id,
-                  //         stream: stream,
-                  //       );
-                  //     },
-                  //   ),
-                  // );
-                },
-                child: Card(
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(title: Text('Inspector')),
+      body: StreamBuilder<List<HttpPerform>>(
+        initialData: const [],
+        stream: Store().callsSubject,
+        builder: (context, snapshot) {
+          return ListView(
+            children: [
+              for (final item in snapshot.data?.reversed ?? <HttpPerform>[])
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return DetailsView(perform: item);
+                        },
+                      ),
+                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       return DetailScreen(
+                    //         id: item.id,
+                    //         stream: stream,
+                    //       );
+                    //     },
+                    //   ),
+                    // );
+                  },
+                  child: Card(
+                    elevation: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${item.request?.method}: ',
+                                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '${item.request?.uri?.path}',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 8),
+                                Text('${item.request?.baseUrl}'),
+                                const SizedBox(height: 8),
+                                Text('${item.status}')
+                              ],
+                            ),
+                          ),
+                          Column(
                             children: [
-                              Text(
-                                '${item.request?.method}: ',
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                '${item.request?.uri?.path}',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ),
-                              const SizedBox(height: 8),
-                              Text('${item.request?.baseUrl}'),
+                              if (item.status == CallStatus.error) Icon(Icons.close, color: Colors.red),
+                              if (item.status == CallStatus.succes) Icon(Icons.check, color: Colors.green),
+                              if (item.status == CallStatus.pending)
+                                SizedBox(
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                  width: 24,
+                                  height: 24,
+                                ),
                             ],
                           ),
-                        ),
-                        Column(
-                          children: [
-                            Icon(Icons.close, color: Colors.red),
-                            Icon(Icons.check, color: Colors.green),
-                            if (item.isLoading)
-                              SizedBox(
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                                width: 24,
-                                height: 24,
-                              ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

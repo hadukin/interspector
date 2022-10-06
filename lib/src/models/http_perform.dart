@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
 
@@ -28,9 +29,52 @@ class HttpPerform {
   }) {
     return HttpPerform(
       id: id,
-      request: this.request ?? request,
-      response: this.response ?? response,
+      request: request ?? this.request,
+      response: response ?? this.response,
     );
+  }
+
+  CallStatus get status {
+    final _status = response?.status;
+    if (_status != null) {
+      bool isSuccess = _status >= 200 && _status <= 299;
+      bool isRedirect = _status >= 300 && _status <= 399;
+      bool isError = _status >= 400 && _status <= 499;
+
+      if (isSuccess) {
+        return CallStatus.succes;
+      } else if (isRedirect) {
+        return CallStatus.warning;
+      } else if (isError) {
+        return CallStatus.error;
+      } else {
+        return CallStatus.error;
+      }
+    } else {
+      return CallStatus.pending;
+    }
+  }
+
+  Color get statusColor {
+    final _status = response?.status;
+
+    if (_status != null) {
+      bool isSuccess = _status >= 200 && _status <= 299;
+      bool isRedirect = _status >= 300 && _status <= 399;
+      bool isError = _status >= 400 && _status <= 499;
+
+      if (isSuccess) {
+        return Colors.green;
+      } else if (isRedirect) {
+        return Colors.yellow;
+      } else if (isError) {
+        return Colors.red;
+      } else {
+        return Colors.redAccent;
+      }
+    } else {
+      return Colors.black;
+    }
   }
 
   int? get timeInMilliseconds {
@@ -46,4 +90,17 @@ class HttpPerform {
         'request': request?.toJson(),
         'response': response?.toJson(),
       };
+}
+
+enum CallStatus {
+  pending(Colors.black),
+  succes(Colors.green),
+  error(Colors.red),
+  warning(Colors.yellow);
+
+  final Color color;
+
+  // final int statusCode;
+
+  const CallStatus(this.color);
 }

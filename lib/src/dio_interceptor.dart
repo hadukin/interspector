@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/request_item.dart';
@@ -66,7 +68,7 @@ class ApiInterceptors extends InterceptorsWrapper {
     final r = ResponseItem(
       data: response.data,
       headers: response.headers.map,
-      size: 0,
+      size: utf8.encode(response.data.toString()).length,
       status: response.statusCode ?? 0,
     );
 
