@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interspector/src/models/call_status.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/presentation/detail_view.dart';
 
@@ -8,7 +9,7 @@ class ListRequest extends StatefulWidget {
     required this.data,
   });
 
-  final List<HttpPerform>? data;
+  final List<HttpCall>? data;
 
   @override
   State<ListRequest> createState() => _ListRequestState();
@@ -19,7 +20,7 @@ class _ListRequestState extends State<ListRequest> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        for (final item in widget.data?.reversed ?? <HttpPerform>[])
+        for (final item in widget.data?.reversed ?? <HttpCall>[])
           InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -40,19 +41,20 @@ class _ListRequestState extends State<ListRequest> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '${item.request?.method}: ',
-                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${item.request?.uri?.path}',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const SizedBox(height: 8),
-                          Text('${item.request?.baseUrl}'),
-                          const SizedBox(height: 8),
-                          Text('${item.request?.time}')
+                          Text('${item.status}'),
+                          // Text(
+                          //   '${item.request?.method}: ',
+                          //   style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
+                          // ),
+                          // const SizedBox(height: 8),
+                          // Text(
+                          //   '${item.request?.uri?.path}',
+                          //   style: Theme.of(context).textTheme.bodyText1,
+                          // ),
+                          // const SizedBox(height: 8),
+                          // Text('${item.request?.baseUrl}'),
+                          // const SizedBox(height: 8),
+                          // Text('${item.request?.time}')
                         ],
                       ),
                     ),

@@ -10,7 +10,7 @@ class DetailsView extends StatefulWidget {
     required this.perform,
   });
 
-  final HttpPerform perform;
+  final HttpCall perform;
 
   @override
   State<DetailsView> createState() => _DetailsViewState();

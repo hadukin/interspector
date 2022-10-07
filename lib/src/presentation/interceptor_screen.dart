@@ -12,7 +12,7 @@ class InterceptorScreen extends StatefulWidget {
 }
 
 class _InterceptorScreenState extends State<InterceptorScreen> {
-  late Stream<List<HttpPerform>> stream;
+  late Stream<List<HttpCall>> stream;
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Inspector')),
-      body: StreamBuilder<List<HttpPerform>>(
+      body: StreamBuilder<List<HttpCall>>(
         initialData: const [],
         stream: Store().callsSubject,
         builder: (context, snapshot) {

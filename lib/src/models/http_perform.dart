@@ -1,82 +1,60 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:interspector/src/models/call_status.dart';
 import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
+import '../utils/call_status_extension.dart';
 
-class HttpPerform {
+class HttpCall {
   final int id;
-  bool isLoading = true;
+  bool isLoading = false;
   RequestItem? request;
   ResponseItem? response;
   ErrorItem? error;
 
-  HttpPerform({
+  HttpCall({
     required this.id,
     this.request,
     this.response,
+    this.error,
   });
 
-  addRequest(RequestItem value) => request = value;
+  addRequest(RequestItem value) {
+    request = value;
+    isLoading = true;
+  }
 
   addResponse(ResponseItem? value) {
     response = value;
     isLoading = false;
   }
 
-  HttpPerform copyWith({
+  addError(ErrorItem? value) {
+    error = value;
+    isLoading = false;
+  }
+
+  HttpCall copyWith({
     RequestItem? request,
     ResponseItem? response,
+    ErrorItem? error,
   }) {
-    return HttpPerform(
+    return HttpCall(
       id: id,
       request: request ?? this.request,
       response: response ?? this.response,
+      error: error ?? this.error,
     );
   }
 
   CallStatus get status {
-    final _status = response?.status;
-    if (_status != null) {
-      bool isSuccess = _status >= 200 && _status <= 299;
-      bool isRedirect = _status >= 300 && _status <= 399;
-      bool isError = _status >= 400 && _status <= 499;
-
-      if (isSuccess) {
-        return CallStatus.succes;
-      } else if (isRedirect) {
-        return CallStatus.warning;
-      } else if (isError) {
-        return CallStatus.error;
-      } else {
-        return CallStatus.error;
-      }
-    } else {
-      return CallStatus.pending;
-    }
+    final status = response?.status;
+    return status.getCallStatusFromCode;
   }
 
   Color get statusColor {
     final status = response?.status;
-
-    if (status != null) {
-      bool isSuccess = status >= 200 && status <= 299;
-      bool isRedirect = status >= 300 && status <= 399;
-      bool isError = status >= 400 && status <= 499;
-
-      if (isSuccess) {
-        return Colors.green;
-      } else if (isRedirect) {
-        return Colors.yellow;
-      } else if (isError) {
-        return Colors.red;
-      } else {
-        return Colors.redAccent;
-      }
-    } else {
-      return Colors.black;
-    }
+    return status.getCallStatusFromCode.color;
   }
 
   int? get timeInMilliseconds {
@@ -101,19 +79,5 @@ class HttpPerform {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HttpPerform &&
-          runtimeType == other.runtimeType &&
-          request == other.request &&
-          response == other.response;
-}
-
-enum CallStatus {
-  pending(Colors.black),
-  succes(Colors.green),
-  error(Colors.red),
-  warning(Colors.yellow);
-
-  final Color color;
-
-  const CallStatus(this.color);
+      other is HttpCall && runtimeType == other.runtimeType && request == other.request && response == other.response;
 }
