@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/request_item.dart';

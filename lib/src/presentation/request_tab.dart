@@ -3,15 +3,15 @@ import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/presentation/detail_view.dart';
 import 'package:interspector/src/presentation/row_item.dart';
 
-class RequestWidget extends StatefulWidget {
-  const RequestWidget({super.key, required this.request});
+class RequestTab extends StatefulWidget {
+  const RequestTab({super.key, required this.request});
   final RequestItem request;
 
   @override
-  State<RequestWidget> createState() => _RequestWidgetState();
+  State<RequestTab> createState() => _RequestTabState();
 }
 
-class _RequestWidgetState extends State<RequestWidget> {
+class _RequestTabState extends State<RequestTab> {
   @override
   Widget build(BuildContext context) {
     return Column(

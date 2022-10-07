@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/request_item.dart';
-import 'package:interspector/src/presentation/request_widget.dart';
-import 'package:interspector/src/presentation/response_widget.dart';
+import 'package:interspector/src/presentation/error_tab.dart';
+import 'package:interspector/src/presentation/request_tab.dart';
+import 'package:interspector/src/presentation/response_tab.dart';
 
 class DetailsView extends StatefulWidget {
   const DetailsView({
@@ -22,7 +23,7 @@ class _DetailsViewState extends State<DetailsView> {
     return Scaffold(
       body: DefaultTabController(
         initialIndex: 0,
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             title: Text('${widget.perform.request?.baseUrl}'),
@@ -35,6 +36,9 @@ class _DetailsViewState extends State<DetailsView> {
                   text: 'Response',
                 ),
                 Tab(
+                  text: 'Error',
+                ),
+                Tab(
                   text: 'more',
                 ),
               ],
@@ -42,11 +46,20 @@ class _DetailsViewState extends State<DetailsView> {
           ),
           body: TabBarView(
             children: <Widget>[
-              RequestWidget(request: widget.perform.request!),
               SingleChildScrollView(
-                child: ResponseWidget(
+                child: RequestTab(
+                  request: widget.perform.request!,
+                ),
+              ),
+              SingleChildScrollView(
+                child: ResponseTab(
                   response: widget.perform.response,
                   isLoading: widget.perform.isLoading,
+                ),
+              ),
+              SingleChildScrollView(
+                child: ErrorTab(
+                  item: widget.perform.error,
                 ),
               ),
               Center(

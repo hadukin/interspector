@@ -5,10 +5,12 @@ class RowItem extends StatelessWidget {
     super.key,
     required this.name,
     this.value,
+    this.style,
   });
 
   final String name;
   final String? value;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class RowItem extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   '$value',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1?.merge(style),
                 ),
               ],
             ),

@@ -3,9 +3,10 @@ import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
 import 'package:interspector/src/presentation/detail_view.dart';
 import 'package:interspector/src/presentation/row_item.dart';
+import 'package:interspector/src/utils/call_status_extension.dart';
 
-class ResponseWidget extends StatefulWidget {
-  const ResponseWidget({
+class ResponseTab extends StatefulWidget {
+  const ResponseTab({
     super.key,
     required this.response,
     required this.isLoading,
@@ -14,10 +15,10 @@ class ResponseWidget extends StatefulWidget {
   final bool isLoading;
 
   @override
-  State<ResponseWidget> createState() => _ResponseWidgetState();
+  State<ResponseTab> createState() => _ResponseTabState();
 }
 
-class _ResponseWidgetState extends State<ResponseWidget> {
+class _ResponseTabState extends State<ResponseTab> {
   @override
   Widget build(BuildContext context) {
     if (widget.isLoading) return const Center(child: CircularProgressIndicator());
@@ -29,13 +30,14 @@ class _ResponseWidgetState extends State<ResponseWidget> {
         ),
         const Divider(),
         RowItem(
-          name: 'DATA',
-          value: '${widget.response?.data}',
+          name: 'STATUS',
+          value: '${widget.response?.status}',
+          style: TextStyle(color: widget.response?.status.getCallStatusFromCode.color),
         ),
         const Divider(),
         RowItem(
-          name: 'STATUS',
-          value: '${widget.response?.status}',
+          name: 'DATA',
+          value: '${widget.response?.data}',
         ),
       ],
     );

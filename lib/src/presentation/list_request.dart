@@ -41,20 +41,30 @@ class _ListRequestState extends State<ListRequest> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${item.status}'),
-                          // Text(
-                          //   '${item.request?.method}: ',
-                          //   style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
-                          // ),
-                          // const SizedBox(height: 8),
-                          // Text(
-                          //   '${item.request?.uri?.path}',
-                          //   style: Theme.of(context).textTheme.bodyText1,
-                          // ),
-                          // const SizedBox(height: 8),
-                          // Text('${item.request?.baseUrl}'),
-                          // const SizedBox(height: 8),
-                          // Text('${item.request?.time}')
+                          Text(
+                            '${item.request?.method}: ',
+                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '${item.request?.uri?.path}',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: 8),
+                          Text('${item.request?.baseUrl}'),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  '${normalizeTime(item.request?.time.hour)}:${normalizeTime(item.request?.time.minute)}:${normalizeTime(item.request?.time.second)}',
+                                ),
+                              ),
+                              Expanded(
+                                child: Text('${item.timeInMilliseconds} ms'),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -77,5 +87,15 @@ class _ListRequestState extends State<ListRequest> {
           ),
       ],
     );
+  }
+}
+
+String normalizeTime(int? time) {
+  if (time == null) return '';
+
+  if (time < 10) {
+    return '0$time';
+  } else {
+    return '$time';
   }
 }
