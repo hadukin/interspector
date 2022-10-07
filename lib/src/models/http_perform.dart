@@ -58,12 +58,12 @@ class HttpPerform {
   }
 
   Color get statusColor {
-    final _status = response?.status;
+    final status = response?.status;
 
-    if (_status != null) {
-      bool isSuccess = _status >= 200 && _status <= 299;
-      bool isRedirect = _status >= 300 && _status <= 399;
-      bool isError = _status >= 400 && _status <= 499;
+    if (status != null) {
+      bool isSuccess = status >= 200 && status <= 299;
+      bool isRedirect = status >= 300 && status <= 399;
+      bool isError = status >= 400 && status <= 499;
 
       if (isSuccess) {
         return Colors.green;
@@ -89,9 +89,22 @@ class HttpPerform {
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'request': request?.toJson(),
         'response': response?.toJson(),
+        'error': error?.toJson(),
       };
+
+  @override
+  int get hashCode => id.hashCode ^ isLoading.hashCode ^ request.hashCode ^ response.hashCode ^ error.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HttpPerform &&
+          runtimeType == other.runtimeType &&
+          request == other.request &&
+          response == other.response;
 }
 
 enum CallStatus {
@@ -101,8 +114,6 @@ enum CallStatus {
   warning(Colors.yellow);
 
   final Color color;
-
-  // final int statusCode;
 
   const CallStatus(this.color);
 }

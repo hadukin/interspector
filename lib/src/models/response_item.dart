@@ -35,4 +35,18 @@ class ResponseItem {
       size: size ?? this.size,
     );
   }
+
+  @override
+  int get hashCode => data.hashCode ^ headers.hashCode ^ status.hashCode ^ size.hashCode ^ time.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ResponseItem &&
+          runtimeType == other.runtimeType &&
+          status == other.status &&
+          size == other.size &&
+          time == other.time &&
+          data == other.data &&
+          headers == other.headers;
 }
