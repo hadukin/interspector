@@ -11,7 +11,7 @@ class Interspector {
   late Store _store;
 
   Interspector() {
-    _store = Store();
+    _store = Store.instance;
   }
 
   ApiInterceptors dioInterceptor() => ApiInterceptors(_store);

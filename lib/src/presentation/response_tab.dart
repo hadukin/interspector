@@ -23,7 +23,7 @@ class _ResponseTabState extends State<ResponseTab> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<HttpCall>>(
-      stream: Store().callsSubject,
+      stream: Store.instance.callsSubject,
       builder: (context, snapshot) {
         HttpCall? call = snapshot.data?.firstWhere((e) => e.id == widget.id);
         if (call?.response == null) return const CircularProgressIndicator();

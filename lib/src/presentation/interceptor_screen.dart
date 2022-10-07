@@ -25,7 +25,7 @@ class _InterceptorScreenState extends State<InterceptorScreen> {
       appBar: AppBar(title: const Text('Inspector')),
       body: StreamBuilder<List<HttpCall>>(
         initialData: const [],
-        stream: Store().callsSubject,
+        stream: Store.instance.callsSubject,
         builder: (context, snapshot) {
           if (snapshot.data?.length == 0) return const Center(child: Text('NO DATA'));
           return ListRequest(data: snapshot.data);

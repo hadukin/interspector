@@ -12,7 +12,6 @@ class ErrorTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.isLoading) return const Center(child: CircularProgressIndicator());
     return Column(
       children: [
         RowItem(

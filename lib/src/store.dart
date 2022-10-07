@@ -6,17 +6,21 @@ import 'package:interspector/src/models/response_item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Store {
-  static Store? _singleton;
+  // static Store? _singleton;
+  // factory Store() {
+  //   _singleton ??= Store._();
+  //   return _singleton!;
+  // }
+  // Store._() {
+  //   // _inputController.stream.listen(_listener);
+  //   // _outputController.add([]);
+  // }
 
-  factory Store() {
-    _singleton ??= Store._();
-    return _singleton!;
-  }
+  Store._();
 
-  Store._() {
-    // _inputController.stream.listen(_listener);
-    // _outputController.add([]);
-  }
+  static final Store _instance = Store._();
+
+  static Store get instance => _instance;
 
   addRequest(RequestItem requestItem, int requestId) {
     final httpCall = HttpCall(id: requestId).copyWith(request: requestItem);
