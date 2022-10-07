@@ -55,6 +55,10 @@ class Store {
 
   StreamSubscription? _callsSubscription;
 
+  HttpCall getById(int id) {
+    return callsSubject.value.firstWhere((e) => e.id == id, orElse: null);
+  }
+
   void dispose() {
     callsSubject.close();
     _callsSubscription?.cancel();

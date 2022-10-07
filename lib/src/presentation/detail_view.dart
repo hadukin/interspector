@@ -52,10 +52,7 @@ class _DetailsViewState extends State<DetailsView> {
                 ),
               ),
               SingleChildScrollView(
-                child: ResponseTab(
-                  response: widget.perform.response,
-                  isLoading: widget.perform.isLoading,
-                ),
+                child: ResponseTab(id: widget.perform.id),
               ),
               SingleChildScrollView(
                 child: ErrorTab(

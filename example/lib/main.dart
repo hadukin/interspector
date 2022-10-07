@@ -66,8 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _post() {
-    client.post('https://6212347701ccdac07434b998.mockapi.io/content');
+  _post() async {
+    await Future.delayed(Duration(seconds: 2));
+    await client.post('https://6212347701ccdac07434b998.mockapi.io/content');
   }
 
   @override
