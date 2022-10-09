@@ -4,6 +4,7 @@ import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/presentation/error_tab.dart';
 import 'package:interspector/src/presentation/request_tab.dart';
 import 'package:interspector/src/presentation/response_tab.dart';
+import 'package:interspector/src/store.dart';
 
 class DetailsView extends StatefulWidget {
   const DetailsView({
@@ -24,35 +25,48 @@ class _DetailsViewState extends State<DetailsView> {
       body: DefaultTabController(
         initialIndex: 0,
         length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('${widget.httpCall.request?.baseUrl}'),
-            bottom: const TabBar(
-              tabs: <Widget>[
-                Tab(
-                  text: 'Request',
+        child: StreamBuilder<List<HttpCall>>(
+            stream: Store.instance.callsSubject,
+            initialData: [widget.httpCall],
+            builder: (context, snapshot) {
+              HttpCall? httpCall = snapshot.data?.firstWhere((e) => e.id == widget.httpCall.id);
+              if (httpCall?.request == null) return const CircularProgressIndicator();
+
+              return Scaffold(
+                appBar: AppBar(
+                  title: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(color: httpCall?.status.color),
+                    child: Text('${httpCall?.request?.uri?.path}'),
+                  ),
+                  bottom: const TabBar(
+                    tabs: <Widget>[
+                      Tab(
+                        text: 'Request',
+                      ),
+                      Tab(
+                        text: 'Response',
+                      ),
+                      Tab(
+                        text: 'Error',
+                      ),
+                      Tab(
+                        text: 'more',
+                      ),
+                    ],
+                  ),
                 ),
-                Tab(
-                  text: 'Response',
+                body: TabBarView(
+                  children: <Widget>[
+                    RequestTab(callId: widget.httpCall.id),
+                    ResponseTab(callId: widget.httpCall.id),
+                    ErrorTab(callId: widget.httpCall.id),
+                    RequestTab(callId: widget.httpCall.id),
+                  ],
                 ),
-                Tab(
-                  text: 'Error',
-                ),
-                Tab(
-                  text: 'more',
-                ),
-              ],
-            ),
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              RequestTab(callId: widget.httpCall.id),
-              ResponseTab(callId: widget.httpCall.id),
-              ErrorTab(callId: widget.httpCall.id),
-              RequestTab(callId: widget.httpCall.id),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
   }
