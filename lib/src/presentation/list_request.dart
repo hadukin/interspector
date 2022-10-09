@@ -26,7 +26,7 @@ class _ListRequestState extends State<ListRequest> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
-                    return DetailsView(perform: item);
+                    return DetailsView(httpCall: item);
                   },
                 ),
               );

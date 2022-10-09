@@ -8,10 +8,10 @@ import 'package:interspector/src/presentation/response_tab.dart';
 class DetailsView extends StatefulWidget {
   const DetailsView({
     super.key,
-    required this.perform,
+    required this.httpCall,
   });
 
-  final HttpCall perform;
+  final HttpCall httpCall;
 
   @override
   State<DetailsView> createState() => _DetailsViewState();
@@ -26,7 +26,7 @@ class _DetailsViewState extends State<DetailsView> {
         length: 4,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('${widget.perform.request?.baseUrl}'),
+            title: Text('${widget.httpCall.request?.baseUrl}'),
             bottom: const TabBar(
               tabs: <Widget>[
                 Tab(
@@ -46,22 +46,10 @@ class _DetailsViewState extends State<DetailsView> {
           ),
           body: TabBarView(
             children: <Widget>[
-              SingleChildScrollView(
-                child: RequestTab(
-                  request: widget.perform.request!,
-                ),
-              ),
-              SingleChildScrollView(
-                child: ResponseTab(id: widget.perform.id),
-              ),
-              SingleChildScrollView(
-                child: ErrorTab(
-                  item: widget.perform.error,
-                ),
-              ),
-              Center(
-                child: Text("more"),
-              ),
+              RequestTab(callId: widget.httpCall.id),
+              ResponseTab(callId: widget.httpCall.id),
+              ErrorTab(callId: widget.httpCall.id),
+              RequestTab(callId: widget.httpCall.id),
             ],
           ),
         ),

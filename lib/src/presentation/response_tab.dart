@@ -10,10 +10,10 @@ import 'package:interspector/src/utils/call_status_extension.dart';
 class ResponseTab extends StatefulWidget {
   const ResponseTab({
     super.key,
-    required this.id,
+    required this.callId,
   });
 
-  final int id;
+  final int callId;
 
   @override
   State<ResponseTab> createState() => _ResponseTabState();
@@ -22,32 +22,34 @@ class ResponseTab extends StatefulWidget {
 class _ResponseTabState extends State<ResponseTab> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<HttpCall>>(
-      stream: Store.instance.callsSubject,
-      builder: (context, snapshot) {
-        HttpCall? call = snapshot.data?.firstWhere((e) => e.id == widget.id);
-        if (call?.response == null) return const CircularProgressIndicator();
+    return SingleChildScrollView(
+      child: StreamBuilder<List<HttpCall>>(
+        stream: Store.instance.callsSubject,
+        builder: (context, snapshot) {
+          HttpCall? call = snapshot.data?.firstWhere((e) => e.id == widget.callId);
+          if (call?.response == null) return const CircularProgressIndicator();
 
-        return Column(
-          children: [
-            RowItem(
-              name: 'SIZE',
-              value: '${call?.response?.size}',
-            ),
-            const Divider(),
-            RowItem(
-              name: 'STATUS',
-              value: '${call?.response?.status}',
-              style: TextStyle(color: call?.response?.status.getCallStatusFromCode.color),
-            ),
-            const Divider(),
-            RowItem(
-              name: 'DATA',
-              value: '${call?.response?.data}',
-            ),
-          ],
-        );
-      },
+          return Column(
+            children: [
+              RowItem(
+                name: 'SIZE',
+                value: '${call?.response?.size}',
+              ),
+              const Divider(),
+              RowItem(
+                name: 'STATUS',
+                value: '${call?.response?.status}',
+                style: TextStyle(color: call?.response?.status.getCallStatusFromCode.color),
+              ),
+              const Divider(),
+              RowItem(
+                name: 'DATA',
+                value: '${call?.response?.data}',
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
