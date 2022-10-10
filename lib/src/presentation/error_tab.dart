@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:interspector/src/models/error_item.dart';
 import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/presentation/row_item.dart';
 import 'package:interspector/src/store.dart';

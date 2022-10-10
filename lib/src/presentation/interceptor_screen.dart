@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:interspector/src/models/http_perform.dart';
-import 'package:interspector/src/presentation/detail_view.dart';
 import 'package:interspector/src/presentation/list_request.dart';
 import 'package:interspector/src/store.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:interspector/src/models/http_perform.dart';
-import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/presentation/error_tab.dart';
 import 'package:interspector/src/presentation/request_tab.dart';
 import 'package:interspector/src/presentation/response_tab.dart';

@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:interspector/src/models/error_item.dart';
-import 'package:interspector/src/models/http_perform.dart';
 import 'package:interspector/src/models/request_item.dart';
 import 'package:interspector/src/models/response_item.dart';
 import 'package:interspector/src/store.dart';
@@ -19,6 +17,7 @@ class Interspector {
 
 class ApiInterceptors extends InterceptorsWrapper {
   final Store _store;
+
   ApiInterceptors(this._store);
 
   @override
@@ -35,7 +34,7 @@ class ApiInterceptors extends InterceptorsWrapper {
     _store.addRequest(requestItem, options.hashCode);
 
     // do something before request is sent
-    super.onRequest(options, handler); //add this line
+    super.onRequest(options, handler);
   }
 
   @override

@@ -6,17 +6,9 @@ import 'package:interspector/src/models/response_item.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Store {
-  // static Store? _singleton;
-  // factory Store() {
-  //   _singleton ??= Store._();
-  //   return _singleton!;
-  // }
-  // Store._() {
-  //   // _inputController.stream.listen(_listener);
-  //   // _outputController.add([]);
-  // }
-
-  Store._();
+  Store._() {
+    _callsSubscription = callsSubject.listen(callsListener);
+  }
 
   static final Store _instance = Store._();
 
@@ -59,8 +51,8 @@ class Store {
 
   StreamSubscription? _callsSubscription;
 
-  HttpCall getById(int id) {
-    return callsSubject.value.firstWhere((e) => e.id == id, orElse: null);
+  void callsListener(List<HttpCall> event) {
+    print(event);
   }
 
   void dispose() {
