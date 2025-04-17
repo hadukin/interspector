@@ -14,13 +14,13 @@ class Store {
 
   static Store get instance => _instance;
 
-  addRequest(RequestItem requestItem, int requestId) {
+  void addRequest(RequestItem requestItem, int requestId) {
     final httpCall = HttpCall(id: requestId).copyWith(request: requestItem);
 
     callsSubject.add([...callsSubject.value, httpCall]);
   }
 
-  addResponse(ResponseItem response, int? requestId) {
+  void addResponse(ResponseItem response, int? requestId) {
     if (requestId == null) return;
     HttpCall? selectedCall = _selectCall(requestId);
 
@@ -31,7 +31,7 @@ class Store {
     callsSubject.add([...callsSubject.value]);
   }
 
-  addError(ErrorItem error, int? requestId) {
+  void addError(ErrorItem error, int? requestId) {
     final selectedCall = _selectCall(requestId);
     if (selectedCall == null) return;
 

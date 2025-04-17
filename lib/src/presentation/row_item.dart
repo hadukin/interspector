@@ -30,7 +30,7 @@ class RowItem extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   '$value',
-                  style: Theme.of(context).textTheme.bodyText1?.merge(style),
+                  // style: Theme.of(context).textTheme.bodyText1?.merge(style),
                 ),
               ],
             ),

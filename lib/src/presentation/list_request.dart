@@ -43,12 +43,12 @@ class _ListRequestState extends State<ListRequest> {
                         children: [
                           Text(
                             '${item.request?.method}: ',
-                            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
+                            // style: Theme.of(context).textTheme.bodyText2?.copyWith(color: item.status.color),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             '${item.request?.uri?.path}',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            // style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(height: 8),
                           Text('${item.request?.baseUrl}'),
